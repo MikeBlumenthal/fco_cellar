@@ -4,6 +4,7 @@ const PubSub = require('../helpers/pub_sub.js');
 const Cellar = function () {
   this.data = null;
   this.cellar = null;
+  this.typeNames = null;
 }
 
 Cellar.prototype.getData = function () {
@@ -13,7 +14,8 @@ Cellar.prototype.getData = function () {
   dataPromise.then((data) => {
     this.data = data.table_rows.rows;
     this.organise();
-    console.log(this.cellar);
+    this.getTypes();
+    PubSub.publish('Cellar:data-ready', this.typeNames);
   })
 }
 
@@ -24,6 +26,15 @@ Cellar.prototype.organise = function () {
     cellar_objects.push(object)
   })
   this.cellar = cellar_objects;
-};
+}
+
+Cellar.prototype.getTypes = function () {
+  const allTypes = [];
+  this.data.forEach( (array) => {
+    let type = array[0];
+    allTypes.push(type)
+  })
+   this.typeNames = allTypes.filter( (type, index, types) => types.indexOf(type) === index);
+}
 
 module.exports = Cellar;
