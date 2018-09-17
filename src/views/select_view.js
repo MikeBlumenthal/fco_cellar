@@ -10,7 +10,14 @@ SelectView.prototype.bindEvents = function () {
     const data = event.detail;
     this.populate(data);
   })
-}
+
+  const target = this.element;
+    target.addEventListener('click', (evt) => {
+    const selectedType = evt.target.id;
+    PubSub.publish('SelectView:input', selectedType);
+  })
+};
+
 
 SelectView.prototype.populate = function (data) {
   data.forEach( (type) => {

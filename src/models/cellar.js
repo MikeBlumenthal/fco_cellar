@@ -19,6 +19,14 @@ Cellar.prototype.getData = function () {
   })
 }
 
+Cellar.prototype.bindEvents = function () {
+  PubSub.subscribe('SelectView:input', (event) => {
+    const selectedType = event.detail;
+    const output = this.cellar.filter(object => object.type === selectedType);
+    PubSub.publish('Cellar:selected-ready', output)
+  })
+};
+
 Cellar.prototype.organise = function () {
   const cellar_objects = [];
   this.data.forEach( (array) => {

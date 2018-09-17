@@ -8,4 +8,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const cellar = new Cellar();
   cellar.getData();
+  cellar.bindEvents();
 })
